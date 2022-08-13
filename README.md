@@ -1,24 +1,10 @@
-# posizer
+# FxSizer
+Simple tool for calculating lot size and position risk
 
-## Project setup
-```
-yarn install
-```
+![image](https://user-images.githubusercontent.com/40380125/184488361-e20ab9e0-07e5-4e75-910d-12a3fa56c8ec.png)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Live demo
+https://fxsizer.netlify.app/
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Development info
+Created with tailwindcss and Vue3
