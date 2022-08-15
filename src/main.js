@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
-import App from './App.vue'
-import './index.css'
 
+import App from './components/App.vue'
+import TradeChecklist from './components/TradeChecklist.vue'
+
+import './index.css'
 
 const app = createApp(App);
 
@@ -11,5 +13,8 @@ app.config.globalProperties.$filters = {
         return value.toFixed(pos);
     }
 }
+
+// Register global components
+app.component('trade-checklist', TradeChecklist);
 
 app.mount('#app')

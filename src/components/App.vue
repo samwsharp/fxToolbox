@@ -1,7 +1,7 @@
 <template>
     <div class="bg-sky-600 w-100 h-2"></div>
-    <h1 class="text-xl font-bold text-center mt-9 text-white">Fx<span class="text-sky-600"><i>Sizer</i></span></h1>
-    <div class="w-1/2 mx-auto rounded calculator mt-5 mb-9 p-2">
+    <h1 class="text-xl font-bold text-center mt-9 text-white">Fx<span class="text-sky-600"><i>Toolbox</i></span></h1>
+    <div class="w-5/6 mx-auto rounded calculator my-5 p-2">
         <div class="grid gap-2">
             <div class="grid gap-2" :class="showAskPrice ? 'grid-cols-2' : 'grid-cols-1'">
                 <select v-model="data.selection" class="outline-0 rounded p-1 py-2 bg-white border-2 border-sky-600">
@@ -16,15 +16,16 @@
             </div>
         </div>
     </div>
-    <div v-if="data.pips" @mousedown="data.copyStatus = true" @click="copyLotsToClipboard()" class="w-1/2 cursor-pointer rounded mx-auto mt-5 mb-9 p-5" :class="{'bg-green-200': !sanityCheck, 'bg-red-200': sanityCheck, 'bg-emerald-200': data.copyStatus }">
-        <div class="grid grid-cols-2">
-            <p class="mb-2"><strong>Risk:</strong> ${{ $filters.toFixed(risk) }}</p>
-            <p class="mb-2"><strong>Fees:</strong> ${{ $filters.toFixed(fees) }}</p>
-            <p class="mb-0"><strong>Lots:</strong> {{ $filters.toFixed(lots) }}</p>
-            <p class="mb-0" :class="sanityCheck ? 'underline' : ''"><strong>R:</strong> {{ $filters.toFixed(r) }} (${{ $filters.toFixed(fees+(data.maxRisk*3)) }})</p>
+    <trade-checklist @complete="data.canTakeTrade = $event"></trade-checklist>
+    <div v-if="data.pips" @mousedown="data.copyingToClipboard = true" @click="copyLotsToClipboard()" class="w-5/6 cursor-pointer rounded mx-auto my-5 p-5" :class="{'bg-green-200': data.canTakeTrade, 'bg-red-200': !data.canTakeTrade, 'bg-emerald-200': data.copyingToClipboard }">
+        <div class="grid grid-cols-4">
+            <p class="mb-0"><strong>Risk:</strong> ${{ $filters.toFixed(risk) }}</p>
+            <p class="mb-0 text-center"><strong>Fees:</strong> ${{ $filters.toFixed(fees) }}</p>
+            <p class="mb-0 text-center"><strong>Lots:</strong> {{ $filters.toFixed(lots) }}</p>
+            <p class="mb-0 text-right"><strong>R:</strong> {{ $filters.toFixed(r) }} (${{ $filters.toFixed(fees+(data.maxRisk*3)) }})</p>
         </div>
     </div>
-    <h1 class="text-center mt-9 font-semibold text-white text-sm"><i>By Sam Sharp</i></h1>
+    <h1 class="text-center mt-5 font-semibold text-white text-sm"><i>By Sam Sharp</i></h1>
 </template>
 
 <script>
@@ -36,8 +37,9 @@ export default {
     setup () {
         const data = reactive({
             fxPairs: [ "EURUSD", "GBPUSD", "USDJPY", "EURJPY", "USDCAD", "USDCHF" ],
+            canTakeTrade: false,
             selection: "EURUSD",
-            copyStatus: false,
+            copyingToClipboard: false,
             maxRisk: 50,
             pips: null,
             ask: 1,
@@ -54,9 +56,6 @@ export default {
 
         // Calculate required R value to make up loss of any fees
         const r = computed(() => ((data.maxRisk*3) + fees.value) / risk.value);
-
-        // Perform a sanity check to ensure the calculated amounts sum up to the max risk specified
-        const sanityCheck = computed(() => (r.value > 4.5));
 
         // Calculate the dollar risk per trade
         const risk = computed(() => {
@@ -76,7 +75,7 @@ export default {
         // Copy lot size to clipboard
         const copyLotsToClipboard = (() => {
             navigator.clipboard.writeText(lots.value.toFixed(2)).then(() => {
-                data.copyStatus = false;
+                data.copyingToClipboard = false;
             });
         });
 
@@ -86,7 +85,6 @@ export default {
             risk,
             lots,
             fees,
-            sanityCheck,
             showAskPrice,
             copyLotsToClipboard
         };
