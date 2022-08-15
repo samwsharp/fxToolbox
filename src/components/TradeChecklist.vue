@@ -32,9 +32,7 @@ export default {
             emit('complete', value.every(x => x.checked));
         }, { deep: true });
 
-        return {
-            data,
-        }
+        return { data };
     }
 }
 </script>
