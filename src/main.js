@@ -4,8 +4,9 @@ import App from './components/App.vue'
 import TradeChecklist from './components/TradeChecklist.vue'
 
 import './index.css'
+import store from './store'
 
-const app = createApp(App);
+const app = createApp(App).use(store);
 
 // Filters
 app.config.globalProperties.$filters = {
