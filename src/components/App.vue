@@ -17,12 +17,14 @@
         </div>
     </div>
     <trade-checklist @complete="data.canTakeTrade = $event"></trade-checklist>
-    <div v-if="data.pips" @mousedown="data.copyingToClipboard = true" @click="copyLotsToClipboard()" class="w-5/6 cursor-pointer rounded mx-auto my-5 p-5" :class="{'bg-green-200': data.canTakeTrade, 'bg-red-200': !data.canTakeTrade, 'bg-emerald-200': data.copyingToClipboard }">
+    <div @mousedown="data.copyingToClipboard = true" @click="copyLotsToClipboard()" class="w-5/6 cursor-pointer rounded mx-auto my-5 p-5" :class="{'bg-green-200': data.canTakeTrade, 'bg-red-200': !data.canTakeTrade, 'bg-emerald-200': data.copyingToClipboard }">
         <div class="grid grid-cols-4">
             <p class="mb-0"><strong>Risk:</strong> ${{ $filters.toFixed(risk) }}</p>
-            <p class="mb-0 text-center"><strong>Fees:</strong> ${{ $filters.toFixed(fees) }}</p>
-            <p class="mb-0 text-center"><strong>Lots:</strong> {{ $filters.toFixed(lots) }}</p>
-            <p class="mb-0 text-right"><strong>R:</strong> {{ $filters.toFixed(r) }} (${{ $filters.toFixed(fees+(data.maxRisk*3)) }})</p>
+            <template v-if="data.pips">
+                <p class="mb-0 text-center"><strong>Fees:</strong> ${{ $filters.toFixed(fees) }}</p>
+                <p class="mb-0 text-center"><strong>Lots:</strong> {{ $filters.toFixed(lots) }}</p>
+                <p class="mb-0 text-right"><strong>R:</strong> {{ $filters.toFixed(r) }} (${{ $filters.toFixed(fees+(data.maxRisk*3)) }})</p>
+            </template>
         </div>
     </div>
     <h1 class="text-center mt-5 font-semibold text-white text-sm"><i>By Sam Sharp</i></h1>
