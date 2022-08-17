@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 export default {
     name: 'SettingsModal',
 
-    setup(_, { emit }) {
+    setup() {
         const store = useStore();
         const data = reactive({ "show": true, "checklist": [] });
 
@@ -36,28 +36,26 @@ export default {
             data.checklist = JSON.parse(JSON.stringify(store.state.checklist));
         });
 
+        // Push blank checklist object to local state
         const newChecklistItem = () => {
             data.checklist.push({ checked: false, label: "" });
         };
 
+        // Remove given checklist item from local state
+        const deleteChecklistItem = (index) => {
+            data.checklist.splice(index, 1);
+        };
+
+        // Hydrate store with the updated state
         const saveChanges = () => {
             store.commit('checklist', data.checklist);
             toggle();
         };
 
-        const deleteChecklistItem = (index) => {
-            data.checklist.splice(index, 1);
-        };
-
+        // Hide or show the modal
         const toggle = () => {
             data.show = !data.show;
         };
-
-        // Emit 'complete' once all checkboxes are selected
-        watch(() => data.checklist, (value) => {
-            if (! value) return;
-            emit('complete', value.every(x => x.checked));
-        }, { deep: true });
 
         return {
             data,
