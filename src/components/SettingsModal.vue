@@ -29,7 +29,7 @@ export default {
 
     setup() {
         const store = useStore();
-        const data = reactive({ "show": true, "checklist": [] });
+        const data = reactive({ "show": false, "checklist": [] });
 
         onMounted(() => {
             // Copy from store so to not update the original
