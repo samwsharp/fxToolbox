@@ -1,11 +1,14 @@
 import { createApp } from 'vue'
+import { modal } from './modal'
 
 import './index.css'
 import store from './store'
 
 import App from './components/App.vue'
 import TradeChecklist from './components/TradeChecklist.vue'
-import SettingsModal from './components/SettingsModal.vue'
+import GlobalModal from './components/GlobalModal.vue'
+import ManageRisk from './components/ManageRisk.vue'
+import MangeChecklist from './components/ManageChecklist.vue'
 
 const app = createApp(App).use(store);
 
@@ -21,6 +24,10 @@ store.state.checklist = JSON.parse(localStorage.getItem('checklist')) ?? [];
 
 // Register global components
 app.component('trade-checklist', TradeChecklist);
-app.component('settings-modal', SettingsModal);
+app.component('manage-risk', ManageRisk);
+app.component('manage-checklist', MangeChecklist);
+app.component('global-modal', GlobalModal);
+
+app.provide('modal', modal);
 
 app.mount('#app')

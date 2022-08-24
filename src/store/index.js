@@ -3,6 +3,10 @@ import { createStore } from 'vuex'
 export default createStore({
     state: {
         checklist: null,
+        modal: {
+            _component: null,
+            _show: false,
+        }
     },
 
     getters: {
