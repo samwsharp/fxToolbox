@@ -20,6 +20,12 @@ app.component('edit-trade-objectives', EditTradeObjectives);
 import EditRiskParameters from './components/RiskParameters/Edit.vue'
 app.component('edit-risk-parameters', EditRiskParameters);
 
+import ViewRiskParameters from './components/RiskParameters/View.vue'
+app.component('view-risk-parameters', ViewRiskParameters);
+
+import PositionSizer from './components/PositionSizer.vue'
+app.component('position-sizer', PositionSizer);
+
 // Define global filters
 app.config.globalProperties.$filters = {
     toFixed(value, pos = 2) {
@@ -28,7 +34,7 @@ app.config.globalProperties.$filters = {
 }
 
 // Hydrate store with local storage data
-store.state.checklist = JSON.parse(localStorage.getItem('checklist')) ?? [];
+store.state.objectives = JSON.parse(localStorage.getItem('objectives')) ?? [];
 store.state.riskPreferences = JSON.parse(localStorage.getItem('riskPreferences')) ?? [];
 
 app.mount('#app')

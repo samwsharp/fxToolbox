@@ -1,26 +1,23 @@
 <template>
     <transition :name="transition">
-    <div class="modal-container" v-if="state.show" @click.self="modal.close()">
+    <div class="modal-container" @click.self="modal.close()" v-if="state.show">
         <div class="modal-body">
-            <component ref="" :is="state.component"></component>
+            <component ref="anonComponent" :is="state.component"></component>
         </div>
     </div>
     </transition>
 </template>
 
 <script>
-import { reactive, inject, computed } from 'vue'
+import { ref, reactive, inject, computed } from 'vue'
 
 export default {
     name: 'VueModal',
 
     setup() {
-        const state = reactive({
-            config: { animate: false },
-            component: null,
-            show: false
-        });
+        const anonComponent = ref(null);
 
+        const state = reactive({ config: { animate: false }, component: null, show: false });
         const transition = computed(() => (! state.config.animate) ? null : 'fade');
 
         // Update the local state once the open-modal event is received
@@ -32,16 +29,25 @@ export default {
 
         // Update the local state once the close-modal event is received
         document.addEventListener('_modal_close', (e) => {
+            if (typeof anonComponent.value?.onModalClose === "function") {
+                anonComponent.value?.onModalClose();
+            }
+
             state.show = false;
             state.component = null;
         }, false);
 
-        return { state, transition, modal: inject('modal') };
+        return {
+            state,
+            transition,
+            anonComponent,
+            modal: inject('modal')
+        };
     }
 }
 </script>
 
-<style>
+<style scoped>
 .modal-container {
     position: absolute;
     background-color: rgba(0,0,0,0.8);
@@ -58,7 +64,7 @@ export default {
     margin-top: 10%;
     background-color: white;
     border-radius: 5px;
-    animation: open 0.25s ease;
+    /* animation: open 0.25s ease; */
 }
 
 @keyframes open {
@@ -72,7 +78,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,

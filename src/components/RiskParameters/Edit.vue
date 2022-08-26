@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="flex justify-end p-4 bg-gray-100 rounded-b-lg border-t border-gray-300">
-        <button @click="complete" class="text-center py-2 px-16 text-sm rounded font-semibold bg-sky-600 text-white">Done</button>
+        <button @click="modal.close()" class="text-center py-2 px-16 text-sm rounded font-semibold bg-sky-600 text-white">Done</button>
     </div>
 </template>
 
@@ -33,6 +33,8 @@ export default {
             rewardRatio: 0,
         });
 
+        const onModalClose = () => saveToStore();
+
         onMounted(() => {
             // Hydrate local state from vue store
             const riskPreferences = JSON.parse(JSON.stringify(store.state.riskPreferences));
@@ -41,20 +43,15 @@ export default {
             state.rewardRatio = riskPreferences.rewardRatio;
         });
 
-        const complete = () => {
-            // Save changes and close the modal
-            store.commit('setRiskPreferences', {
-                maxRisk: state.maxRisk,
-                rewardRatio: state.rewardRatio
-            });
-
-            modal.close();
-        };
+        const saveToStore = () => store.commit('setRiskPreferences', {
+            maxRisk: state.maxRisk,
+            rewardRatio: state.rewardRatio
+        });
 
         return {
             modal,
             state,
-            complete,
+            onModalClose,
         }
     }
 }
