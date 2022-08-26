@@ -1,6 +1,9 @@
 <template>
-    <div class="p-7">
-        <h2 class="text-xl mb-2">Manage trade objectives</h2>
+    <div class="pt-7 px-7">
+        <div class="flex justify-between mb-2">
+            <h2 class="text-xl">Manage trade objectives</h2>
+            <button @click="newChecklistItem" class="w-10 font-bold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mx-auto bi bi-plus-lg" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/> </svg></button>
+        </div>
         <div class="grid grid-cols-1">
             <div v-for="(item, index) in data.checklist" class="mt-3 grid gap-2 grid-cols-12">
                 <input v-model="item.label" class="p-3 rounded bg-gray-100 col-span-11" placeholder="Write a cool description" />
@@ -9,11 +12,10 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-end mt-7">
-            <div class="w-2/4 grid grid-cols-2 gap-2">
-                <button @click="newChecklistItem" class="py-4 rounded-lg bg-gray-200 w-full font-bold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mx-auto bi bi-plus-lg" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/> </svg></button>
-                <button @click="saveChanges" class="text-center py-3 text-sm rounded-lg bg-sky-600 text-white">Save</button>
-            </div>
+    </div>
+    <div class="flex justify-end mt-7 p-4 bg-gray-100 rounded-b-lg">
+        <div class="w-1/4 grid grid-cols-1">
+            <button @click="saveChanges" class="text-center py-3 text-sm rounded-lg bg-sky-600 text-white">Done</button>
         </div>
     </div>
 </template>

@@ -1,16 +1,19 @@
 import { createApp } from 'vue'
-import { modal } from './modal'
+import VueModal from './plugins/Vue-Modal'
 
 import './index.css'
 import store from './store'
 
 import App from './components/App.vue'
 import TradeChecklist from './components/TradeChecklist.vue'
-import GlobalModal from './components/GlobalModal.vue'
 import ManageRisk from './components/ManageRisk.vue'
 import MangeChecklist from './components/ManageChecklist.vue'
 
-const app = createApp(App).use(store);
+const app = createApp(App);
+
+app.use(store);
+
+app.use(VueModal, { animate: true });
 
 // Define global filters
 app.config.globalProperties.$filters = {
@@ -26,8 +29,5 @@ store.state.checklist = JSON.parse(localStorage.getItem('checklist')) ?? [];
 app.component('trade-checklist', TradeChecklist);
 app.component('manage-risk', ManageRisk);
 app.component('manage-checklist', MangeChecklist);
-app.component('global-modal', GlobalModal);
-
-app.provide('modal', modal);
 
 app.mount('#app')
