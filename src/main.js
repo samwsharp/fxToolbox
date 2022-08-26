@@ -5,15 +5,20 @@ import './index.css'
 import store from './store'
 
 import App from './components/App.vue'
-import TradeChecklist from './components/TradeChecklist.vue'
-import ManageRisk from './components/ManageRisk.vue'
-import MangeChecklist from './components/ManageChecklist.vue'
 
 const app = createApp(App);
 
 app.use(store);
-
 app.use(VueModal, { animate: true });
+
+import ViewTradeObjectives from './components/TradeObjectives/View.vue'
+app.component('view-trade-objectives', ViewTradeObjectives);
+
+import EditTradeObjectives from './components/TradeObjectives/Edit.vue'
+app.component('edit-trade-objectives', EditTradeObjectives);
+
+import EditRiskParameters from './components/RiskParameters/Edit.vue'
+app.component('edit-risk-parameters', EditRiskParameters);
 
 // Define global filters
 app.config.globalProperties.$filters = {
@@ -24,10 +29,6 @@ app.config.globalProperties.$filters = {
 
 // Hydrate store with local storage data
 store.state.checklist = JSON.parse(localStorage.getItem('checklist')) ?? [];
-
-// Register global components
-app.component('trade-checklist', TradeChecklist);
-app.component('manage-risk', ManageRisk);
-app.component('manage-checklist', MangeChecklist);
+store.state.riskPreferences = JSON.parse(localStorage.getItem('riskPreferences')) ?? [];
 
 app.mount('#app')

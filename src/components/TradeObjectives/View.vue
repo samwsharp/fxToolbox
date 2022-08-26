@@ -13,7 +13,7 @@ import { onMounted, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-    name: 'TradeChecklist',
+    name: 'ViewTradeObjectives',
 
     setup(_, { emit }) {
         const store = useStore();
