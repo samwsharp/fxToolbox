@@ -30,7 +30,7 @@ export default {
         const store = useStore();
 
         const pairs = [ "EURUSD", "GBPUSD", "USDJPY", "EURJPY", "USDCAD", "USDCHF" ];
-        const data = reactive({ pair: "USDJPY", entry: 137.482, stop: 137.442 });
+        const data = reactive({ pair: "EURUSD", entry: null, stop: null });
 
         const reduceEntry = () => {
             data.entry -= 1/pipSize.value
