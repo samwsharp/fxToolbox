@@ -28,12 +28,19 @@ app.component('position-sizer', PositionSizer);
 import Icon from './components/Icon.vue'
 app.component('icon', Icon);
 
-// Define global filters
+import UniqueTradeIdGenerator from './components/UniqueTradeIdGenerator.vue'
+app.component('unquie-trade-id-generator', UniqueTradeIdGenerator);
+
+// Providers
 app.provide('displayNumber', (value) => {
     if (isNaN(value)) return 0;
 
     const factor = 10**2;
     return Math.floor(value * factor) / factor;
+});
+
+app.provide('copy', (str) => {
+    navigator.clipboard.writeText(str);
 });
 
 // Hydrate store with local storage data
