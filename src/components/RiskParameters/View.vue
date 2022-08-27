@@ -11,26 +11,21 @@
 
 <script>
 import { useStore } from 'vuex'
-import { reactive, inject, onMounted, computed } from 'vue'
+import { inject, computed } from 'vue'
 
 export default {
     name: 'ViewRiskParameters',
 
     setup() {
         const store = useStore();
-
-        const risk = computed(() => store.getters.tradeRisk);
-        const r = computed(() => store.getters.rValue);
-        const fees = computed(() => store.getters.fees);
-        const lots = computed(() => store.getters.lots);
-        const rDollars = computed(() => store.getters.rDollars);
+        const displayNumber = inject('displayNumber');
 
         return {
-            r,
-            risk,
-            fees,
-            lots,
-            rDollars,
+            risk: computed(() => displayNumber(store.getters.tradeRisk)),
+            r: computed(() => displayNumber(store.getters.rValue)),
+            fees: computed(() => displayNumber(store.getters.fees)),
+            lots: computed(() => displayNumber(store.getters.lots)),
+            rDollars: computed(() => displayNumber(store.getters.rDollars)),
         }
     }
 }

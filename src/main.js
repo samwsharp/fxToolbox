@@ -8,8 +8,7 @@ import App from './components/App.vue'
 
 const app = createApp(App);
 
-app.use(store);
-app.use(VueModal, { animate: true });
+app.use(store).use(VueModal, { animate: true });
 
 import ViewTradeObjectives from './components/TradeObjectives/View.vue'
 app.component('view-trade-objectives', ViewTradeObjectives);
@@ -26,12 +25,16 @@ app.component('view-risk-parameters', ViewRiskParameters);
 import PositionSizer from './components/PositionSizer.vue'
 app.component('position-sizer', PositionSizer);
 
+import Icon from './components/Icon.vue'
+app.component('icon', Icon);
+
 // Define global filters
-app.config.globalProperties.$filters = {
-    toFixed(value, pos = 2) {
-        return value.toFixed(pos);
-    }
-}
+app.provide('displayNumber', (value) => {
+    if (isNaN(value)) return 0;
+
+    const factor = 10**2;
+    return Math.floor(value * factor) / factor;
+});
 
 // Hydrate store with local storage data
 store.state.objectives = JSON.parse(localStorage.getItem('objectives')) ?? [];

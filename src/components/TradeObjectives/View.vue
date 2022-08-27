@@ -1,10 +1,9 @@
 <template>
-    <div class="text-center bg-sky-300 text-black rounded w-5/6 mx-auto py-5" v-if="data.objectives.length">
+    <div class="bg-gray-800 rounded text-white w-5/6 mx-auto p-5" v-if="data.objectives.length">
         <h1 class="font-bold mb-2">Trade objectives</h1>
-        <template v-for="(item, index) in data.objectives">
-            <input type="checkbox" v-model="item.checked" :id="'__item_'+index">
-            <label :for="'__item_'+index" class="ml-2">{{ item.label }}</label><br>
-        </template>
+        <ul class="ml-5 list-decimal">
+            <li v-for="(item, index) in data.objectives">{{ item.label }}</li>
+        </ul>
     </div>
 </template>
 
@@ -28,13 +27,9 @@ export default {
             data.objectives = store.state.objectives;
         });
 
-        // Emit 'complete' once all checkboxes are selected
-        watch(() => data.objectives, (value) => {
-            if (! value) return;
-            emit('complete', value.every(x => x.checked));
-        }, { deep: true });
-
-        return { data };
+        return {
+            data
+        };
     }
 }
 </script>
