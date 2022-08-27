@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gray-800 rounded text-white p-5" v-if="data.objectives.length">
-        <h1 class="font-bold mb-2">Trade objectives</h1>
+        <h1 class="font-semibold mb-2">Trade objectives</h1>
         <ul class="ml-5 list-decimal">
             <li v-for="(item, index) in data.objectives">{{ item.label }}</li>
         </ul>

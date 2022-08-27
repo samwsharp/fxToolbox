@@ -16,7 +16,7 @@ export default createStore({
 
         lots(state, getters) {
             // The lot size of the trade
-            return ((getters.tradeRisk*state.askPrice) / state.stopSize) / getters.standardLotSize;
+            return (getters.tradeRisk / state.stopSize) / getters.standardLotSize;
         },
 
         fees(state, getters) {
@@ -26,7 +26,7 @@ export default createStore({
 
         tradeRisk(state) {
             // The maximum loss that should be incurred on a trade any excluding fees
-            return ((state.riskPreferences.maxRisk / (3.5 / state.stopSize / 0.5 + 1)) * state.askPrice)/state.askPrice;
+            return (state.riskPreferences.maxRisk / (3.5 / state.stopSize / 0.5 + 1));
         },
 
         target(state) {
