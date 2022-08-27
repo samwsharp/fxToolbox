@@ -1,5 +1,5 @@
 <template>
-    <div @mousedown="data.copyingToClipboard = true" @click="copyLotsToClipboard()" class="w-5/6 cursor-pointer bg-red-300 rounded mx-auto my-5 p-5">
+    <div class="w-5/6 cursor-pointer bg-green-200 rounded mx-auto my-5 p-5">
         <div class="grid grid-cols-4">
             <p class="mb-0"><strong>Risk:</strong> ${{ risk }}</p>
             <p class="mb-0 text-center"><strong>Fees:</strong> ${{ fees }}</p>

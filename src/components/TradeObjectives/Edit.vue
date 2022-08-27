@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="flex justify-end p-4 mt-3 bg-gray-100 rounded-b-lg border-t border-gray-300">
-        <button @click="complete" class="text-center py-2 px-16 text-sm rounded font-semibold bg-sky-600 text-white">Done</button>
+        <button @click="modal.close()" class="text-center py-2 px-16 text-sm rounded font-semibold bg-sky-600 text-white">Done</button>
     </div>
 </template>
 
@@ -29,28 +29,33 @@ export default {
         const store = useStore();
         const modal = inject('modal');
 
-        const data = reactive({ "show": false, "objectives": [] });
+        const data = reactive({
+            "show": false,
+            "objectives": []
+        });
 
-        // Add and remove objectives from local state
-        const add = () => data.objectives.push({ checked: false, label: "" });
-        const del = (index) => data.objectives.splice(index, 1);
+        const onModalClose = () => saveToStore();
 
         onMounted(() => {
             // Hydrate local state from vue store
             data.objectives = JSON.parse(JSON.stringify(store.state.objectives));
         });
 
-        const complete = () => {
-            // Save changes to store and close the modal
-            store.commit('setObjectives', data.objectives);
-            modal.close();
-        };
+        const saveToStore = () => store.commit('storeLocally',{
+            data: data.objectives,
+            key: 'objectives',
+        });
+
+        // Add and remove objectives from local state
+        const add = () => data.objectives.push({ checked: false, label: "" });
+        const del = (index) => data.objectives.splice(index, 1);
 
         return {
             add,
             del,
             data,
-            complete,
+            modal,
+            onModalClose,
         }
     }
 }

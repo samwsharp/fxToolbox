@@ -4,24 +4,29 @@ export default createStore({
     state: {
         objectives: null,
         riskPreferences: { maxRisk: 0, rewardRatio: 0 },
+        pair: "EURUSD",
         stopSize: 0,
         askPrice: 1,
     },
 
     getters: {
-        lots(state, getters) {
-            // The lot size of the trade
-            return getters.tradeRisk / state.stopSize;
+        standardLotSize(state) {
+            return (/JPY$/.test(state.pair)) ? 100 : 1;
         },
 
-        fees(_, getters) {
+        lots(state, getters) {
+            // The lot size of the trade
+            return ((getters.tradeRisk*state.askPrice) / state.stopSize) / getters.standardLotSize;
+        },
+
+        fees(state, getters) {
             // Any fees incurred as a result of the lot size used
-            return getters.lots / 0.5 * 3.5;
+            return (getters.lots / 0.5 * 3.5);
         },
 
         tradeRisk(state) {
             // The maximum loss that should be incurred on a trade any excluding fees
-            return (state.riskPreferences.maxRisk / (3.5 / state.stopSize / 0.5 + 1)) * state.askPrice;
+            return ((state.riskPreferences.maxRisk / (3.5 / state.stopSize / 0.5 + 1)) * state.askPrice)/state.askPrice;
         },
 
         target(state) {
@@ -41,22 +46,13 @@ export default createStore({
     },
 
     mutations: {
-        setObjectives(state, items) {
+        storeLocally(state, payload) {
             // Update global store with incoming data
-            const data = JSON.stringify(items);
-            state.objectives = JSON.parse(data);
+            const data = JSON.stringify(payload.data);
+            state[payload.key] = JSON.parse(data);
 
             // Also override local storage object to persist changes
-            localStorage.setItem('objectives', data);
-        },
-
-        setRiskPreferences(state, value) {
-            // Update global store with incoming data
-            const data = JSON.stringify(value);
-            state.riskPreferences = JSON.parse(data);
-
-            // Also override local storage object to persist changes
-            localStorage.setItem('riskPreferences', data);
+            localStorage.setItem(payload.key, data);
         },
     },
 

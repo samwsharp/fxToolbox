@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import { useStore } from 'vuex'
-import { reactive, inject, onMounted } from 'vue'
+import { useStore } from "vuex"
+import { reactive, inject, onMounted } from "vue"
 
 export default {
-    name: 'EditRiskParameters',
+    name: "EditRiskParameters",
 
     setup() {
         const store = useStore();
-        const modal = inject('modal');
+        const modal = inject("modal");
 
         const state = reactive({
             maxRisk: 0,
@@ -43,9 +43,9 @@ export default {
             state.rewardRatio = riskPreferences.rewardRatio;
         });
 
-        const saveToStore = () => store.commit('setRiskPreferences', {
-            maxRisk: state.maxRisk,
-            rewardRatio: state.rewardRatio
+        const saveToStore = () => store.commit("storeLocally", {
+            data: { maxRisk: state.maxRisk, rewardRatio: state.rewardRatio },
+            key: "riskPreferences"
         });
 
         return {
