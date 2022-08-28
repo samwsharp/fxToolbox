@@ -12,7 +12,10 @@ export default createStore({
     getters: {
         pipValue(state) {
             // The value of a single pip for the given currency pair
-            return (/JPY$/.test(state.pair)) ? 100/state.askPrice : 1/state.askPrice;
+            if (/USD$/.test(state.pair)) return 1;
+            if (/JPY$/.test(state.pair)) return 100/state.askPrice;
+
+            return 1/state.askPrice;
         },
 
         lots(state, getters) {
@@ -27,7 +30,12 @@ export default createStore({
 
         tradeRisk(state,getters) {
             // The maximum dollar risk per trade excluding any fees
-            const stop = state.stopSize*getters.pipValue;
+            let stop = state.stopSize;
+
+            if (! /USD$/.test(state.pair)) {
+                stop = stop*getters.pipValue;
+            }
+
             return state.riskPreferences.maxRisk/((3.5/stop/0.5)+1);
         },
 
