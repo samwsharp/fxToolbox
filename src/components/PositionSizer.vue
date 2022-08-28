@@ -13,7 +13,7 @@
             <div class="grid grid-cols-3 gap-2">
                 <input class="p-1 border-2 rounded border-sky-600" v-model="data.entry" type="number" placeholder="Entry Price"/>
                 <input class="p-1 border-2 rounded border-sky-600" v-model="data.stop" type="number" placeholder="Stop Price"/>
-                <input type="text" class="p-1 border-2 border-sky-600 rounded" :value="'Stop in pips: '+stopSize" disabled />
+                <input type="text" class="p-1 border-2 border-sky-600 rounded" :value="'Pipette stop: '+stopSize" disabled />
             </div>
         </div>
     </div>

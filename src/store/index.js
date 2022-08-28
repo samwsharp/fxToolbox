@@ -10,23 +10,25 @@ export default createStore({
     },
 
     getters: {
-        standardLotSize(state) {
-            return (/JPY$/.test(state.pair)) ? 100 : 1;
+        pipValue(state) {
+            // The value of a single pip for the given currency pair
+            return (/JPY$/.test(state.pair)) ? 100/state.askPrice : 1/state.askPrice;
         },
 
         lots(state, getters) {
             // The lot size of the trade
-            return (getters.tradeRisk / state.stopSize) / getters.standardLotSize;
+            return getters.tradeRisk/(state.stopSize * getters.pipValue);
         },
 
         fees(state, getters) {
             // Any fees incurred as a result of the lot size used
-            return (getters.lots / 0.5 * 3.5);
+            return 3.5 * (getters.lots / 0.5);
         },
 
-        tradeRisk(state) {
-            // The maximum loss that should be incurred on a trade any excluding fees
-            return (state.riskPreferences.maxRisk / (3.5 / state.stopSize / 0.5 + 1));
+        tradeRisk(state,getters) {
+            // The maximum dollar risk per trade excluding any fees
+            const stop = state.stopSize*getters.pipValue;
+            return state.riskPreferences.maxRisk/((3.5/stop/0.5)+1);
         },
 
         target(state) {
