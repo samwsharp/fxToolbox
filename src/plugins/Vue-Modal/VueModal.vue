@@ -1,8 +1,8 @@
 <template>
-    <transition :name="transition">
+    <transition name="fade">
     <div class="modal-container" @click.self="modal.close()" v-if="state.show">
         <div class="modal-body">
-            <component ref="anonComponent" :is="state.component"></component>
+            <component ref="childComponent" :is="state.component" @hook:mounted="ready"></component>
         </div>
     </div>
     </transition>
@@ -15,32 +15,41 @@ export default {
     name: 'VueModal',
 
     setup() {
-        const anonComponent = ref(null);
+        const childComponent = ref(null);
 
-        const state = reactive({ config: { animate: false }, component: null, show: false });
-        const transition = computed(() => (! state.config.animate) ? null : 'fade');
+        const state = reactive({
+            component: null,
+            show: false
+        });
 
         // Update the local state once the open-modal event is received
         document.addEventListener('_modal_open', (e) => {
-            state.show = true;
             state.component = e.detail.component;
-            state.config = e.detail.config;
+            state.show = true;
         }, false);
 
         // Update the local state once the close-modal event is received
         document.addEventListener('_modal_close', (e) => {
-            if (typeof anonComponent.value?.onModalClose === "function") {
-                anonComponent.value?.onModalClose();
+            if (typeof childComponent.value?.onModalClose === "function") {
+                childComponent.value?.onModalClose();
             }
 
             state.show = false;
             state.component = null;
         }, false);
 
+        const ready = () => {
+            if (! childComponent) return;
+
+            document.dispatchEvent(
+                new CustomEvent('_modal_opened', { detail: {ref: childComponent.value} })
+            );
+        };
+
         return {
             state,
-            transition,
-            anonComponent,
+            ready,
+            childComponent,
             modal: inject('modal')
         };
     }

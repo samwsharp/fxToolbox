@@ -24,6 +24,8 @@ import { reactive, inject, onMounted } from "vue"
 export default {
     name: "EditRiskParameters",
 
+    emits: ["hook:mounted"],
+
     setup() {
         const store = useStore();
         const modal = inject("modal");

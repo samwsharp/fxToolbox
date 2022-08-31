@@ -25,6 +25,8 @@ import { onMounted, reactive, inject } from 'vue'
 export default {
     name: "EditTradeObjectives",
 
+    emits: ["hook:mounted"],
+
     setup() {
         const store = useStore();
         const modal = inject('modal');
