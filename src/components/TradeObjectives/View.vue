@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-800 rounded text-white p-5" v-if="data.objectives.length">
+    <div class="bg-gray-800 rounded text-white p-5 cursor-pointer" :class="!data.read ? 'bg-animate' : ''" v-if="data.objectives.length" @click="data.read = true">
         <h1 class="font-semibold mb-2">Trade objectives</h1>
         <ul class="ml-5 list-decimal">
             <li v-for="(item, index) in data.objectives">{{ item.label }}</li>
@@ -16,7 +16,7 @@ export default {
 
     setup(_, { emit }) {
         const store = useStore();
-        const data = reactive({ "objectives": [] });
+        const data = reactive({ "objectives": [], "read": false });
 
         onMounted(() => {
             data.objectives = store.state.objectives;
@@ -33,3 +33,15 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.bg-animate {
+    animation: main 2s infinite;
+}
+
+@keyframes main {
+    0% {background-color: #103f56;}
+    50% {background-color: #1f2937;}
+    100% {background-color: #103f56;}
+}
+</style>
