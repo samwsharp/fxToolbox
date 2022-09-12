@@ -40,8 +40,8 @@ export default {
 }
 
 @keyframes main {
-    0% {background-color: #103f56;}
-    50% {background-color: #1f2937;}
-    100% {background-color: #103f56;}
+    0% {background-color: #414546;}
+    50% {background-color: #062732;}
+    100% {background-color: #414546;}
 }
 </style>
